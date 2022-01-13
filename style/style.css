@@ -1,0 +1,33 @@
+body {
+  background-color: beige;
+}
+
+.divJoke {
+  position: fixed;
+  top: 32%;
+  left: 11%;
+  text-align: center;
+}
+
+.temp {
+  text-align: end;
+  margin: 0 25px 0 0;
+}
+img {
+  width: 40%;
+  display: block;
+  margin: -50px auto 0 auto;
+}
+
+.btnRounded {
+  border-radius: 50%;
+  margin: 40px;
+}
+
+.myButton {
+  background-image: url("https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png");
+}
+
+.inLine {
+  display: inline-flex;
+}
