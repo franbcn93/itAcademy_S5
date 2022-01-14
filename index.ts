@@ -46,17 +46,18 @@ getWeather()
 
 /*  Nivell 1 -Exercici 3 */
 let reportAcudits: Array<object> = []
-let d: Date;
+let d: Date = new Date();
+let resultDate: string =  d.toISOString().split('T')[0];
 let joke: Joke;
 
 
 class Joke{
   public text: string;
   public score: number;
-  public date: Date;
+  public date: string;
   
 
-  constructor(text: string, score: number, date: Date){
+  constructor(text: string, score: number, date: string){
     this.text = text;
     this.score = score;
     this.date = date;
@@ -70,39 +71,42 @@ class Joke{
 
 
 document.querySelector(".score-1").addEventListener("click", ()=> {
-  d = new Date();
-  joke = new Joke(sentence, 3, d);
-  reportAcudits.push(joke);
-  console.log(reportAcudits);
+  joke = new Joke(sentence, 3, resultDate);
+  nextJoke(joke)
 })
 
 document.querySelector(".score-2").addEventListener("click", ()=> {
-  d = new Date();
-  joke = new Joke(sentence,2, d);
-  reportAcudits.push(joke);
-  console.log(reportAcudits);
+  joke = new Joke(sentence,2, resultDate);
+  nextJoke(joke)
 })
 
 document.querySelector(".score-3").addEventListener("click", ()=> {
-  d = new Date();
-  joke = new Joke(sentence,1, d);
-  reportAcudits.push(joke);
-  console.log(reportAcudits);
+  joke = new Joke(sentence,1, resultDate);
+  nextJoke(joke)
 })
 
+function nextJoke(joke: Joke){
+  reportAcudits.push(joke);
+  console.log(reportAcudits);
+  getJokeBB();
+  return null;
+}
+
 /* NIVELL 2 - EXERCICI 5 */
-function getJokeBB (){
+const getJokeBB = async () =>{
+  let apiUrl: Request = new Request("https://breaking-bad-quotes.herokuapp.com/v1/quotes");
+
   const p = document.createElement("p");
   p.id = "author";
-  
-  fetch('https://breaking-bad-quotes.herokuapp.com/v1/quotes')
-        .then(response => response.json())
-        .then(json => {
-          changeText.innerHTML = `"${json[0].quote}"`
-          p.innerHTML= `<strong>${json[0].author}</strong>`
-          changeText.appendChild(p);
-          document.getElementById("author").style.paddingTop="20px";
-        });
+
+  const response = await fetch(apiUrl, header);
+  const data = await response.json();
+  sentence = data[0].quote;
+  changeText.innerHTML = `"${sentence}"`
+  p.innerHTML= `<strong>${data[0].author}</strong>`
+  changeText.appendChild(p);
+  document.getElementById("author").style.paddingTop="20px";
+  return sentence;
 }
 
 

@@ -94,7 +94,8 @@ var getWeather = function () { return __awaiter(_this, void 0, void 0, function 
 getWeather();
 /*  Nivell 1 -Exercici 3 */
 var reportAcudits = [];
-var d;
+var d = new Date();
+var resultDate = d.toISOString().split('T')[0];
 var joke;
 var Joke = /** @class */ (function () {
     function Joke(text, score, date) {
@@ -108,36 +109,47 @@ var Joke = /** @class */ (function () {
     return Joke;
 }());
 document.querySelector(".score-1").addEventListener("click", function () {
-    d = new Date();
-    joke = new Joke(sentence, 3, d);
-    reportAcudits.push(joke);
-    console.log(reportAcudits);
+    joke = new Joke(sentence, 3, resultDate);
+    nextJoke(joke);
 });
 document.querySelector(".score-2").addEventListener("click", function () {
-    d = new Date();
-    joke = new Joke(sentence, 2, d);
-    reportAcudits.push(joke);
-    console.log(reportAcudits);
+    joke = new Joke(sentence, 2, resultDate);
+    nextJoke(joke);
 });
 document.querySelector(".score-3").addEventListener("click", function () {
-    d = new Date();
-    joke = new Joke(sentence, 1, d);
+    joke = new Joke(sentence, 1, resultDate);
+    nextJoke(joke);
+});
+function nextJoke(joke) {
     reportAcudits.push(joke);
     console.log(reportAcudits);
-});
-/* NIVELL 2 - EXERCICI 5 */
-function getJokeBB() {
-    var p = document.createElement("p");
-    p.id = "author";
-    fetch('https://breaking-bad-quotes.herokuapp.com/v1/quotes')
-        .then(function (response) { return response.json(); })
-        .then(function (json) {
-        changeText.innerHTML = "\"".concat(json[0].quote, "\"");
-        p.innerHTML = "<strong>".concat(json[0].author, "</strong>");
-        changeText.appendChild(p);
-        document.getElementById("author").style.paddingTop = "20px";
-    });
+    getJokeBB();
+    return null;
 }
+/* NIVELL 2 - EXERCICI 5 */
+var getJokeBB = function () { return __awaiter(_this, void 0, void 0, function () {
+    var apiUrl, p, response, data;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                apiUrl = new Request("https://breaking-bad-quotes.herokuapp.com/v1/quotes");
+                p = document.createElement("p");
+                p.id = "author";
+                return [4 /*yield*/, fetch(apiUrl, header)];
+            case 1:
+                response = _a.sent();
+                return [4 /*yield*/, response.json()];
+            case 2:
+                data = _a.sent();
+                sentence = data[0].quote;
+                changeText.innerHTML = "\"".concat(sentence, "\"");
+                p.innerHTML = "<strong>".concat(data[0].author, "</strong>");
+                changeText.appendChild(p);
+                document.getElementById("author").style.paddingTop = "20px";
+                return [2 /*return*/, sentence];
+        }
+    });
+}); };
 /* CAMBIEM A FRASES DE BREAKING BAD
   https://breaking-bad-quotes.herokuapp.com/v1/quotes */
 buttonJoke.addEventListener("click", getJokeBB);
